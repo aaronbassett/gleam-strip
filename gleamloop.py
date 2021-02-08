@@ -4,7 +4,6 @@ import neopixel
 import asyncio
 import uvloop
 import motor.motor_asyncio
-from colour import Color
 from rich import print
 
 asyncio.set_event_loop_policy(uvloop.EventLoopPolicy())
@@ -60,13 +59,18 @@ async def cylon_animation(rgb):
 
                 if i < num_pixels:  # going left
                     pixels[i] = rgb
-                    pixels[i - 1] = rgb
-                    pixels[i - 2] = rgb
+                    if i > 0:
+                        pixels[i - 1] = rgb
+                    if i > 1:
+                        pixels[i - 2] = rgb
                 else:  # going right
                     x = (num_pixels * 2) - i
                     pixels[x] = rgb
-                    pixels[x + 1] = rgb
-                    pixels[x + 2] = rgb
+
+                    if x < num_pixels + 1:
+                        pixels[x + 1] = rgb
+                    if x < num_pixels + 2:
+                        pixels[x + 2] = rgb
 
                 pixels.show()
             else:
@@ -90,8 +94,7 @@ async def work():
     global animation_type
     while True:
         strip = await fetch_strip()
-        base_color = Color(strip["hex_color"])
-        rgb = (int(base_color.red), int(base_color.green), int(base_color.blue))
+        rgb = tuple(int(strip["hex_color"][i : i + 2], 16) for i in (0, 2, 4))
 
         if animation_type != strip["animation"]:
             if strip["animation"] == "rainbow":
