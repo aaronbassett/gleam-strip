@@ -15,6 +15,7 @@ num_pixels = 30
 pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False)
 
 animation_type = ""
+rgb = (0, 0, 255)
 num_pixels = 30
 
 
@@ -51,27 +52,35 @@ async def rainbow_animation():
             await asyncio.sleep(0.5)
 
 
-async def cylon_animation(rgb):
+async def cylon_animation():
     while animation_type == "cylon":
         for i in range(num_pixels * 2):
             if animation_type == "cylon":
+                pixels.fill((255, 255, 255))
+
                 if i < num_pixels:  # going left
-                    print(f"left {i}")
-                    for j in range(num_pixels):
-                        pixels[j] = rgb if i == j else (255, 255, 255)
+                    pixels[i] = rgb
+                    if i > 0:
+                        pixels[i - 1] = rgb
+                    if i > 1:
+                        pixels[i - 2] = rgb
                 else:  # going right
-                    print(f"right {i}")
                     x = (num_pixels * 2) - (i + 1)
-                    for j in range(num_pixels):
-                        pixels[j] = rgb if x == j else (255, 255, 255)
+                    pixels[x] = rgb
+
+                    if x < num_pixels - 2:
+                        pixels[x + 1] = rgb
+                    if x < num_pixels - 3:
+                        pixels[x + 2] = rgb
+
                 pixels.show()
             else:
                 return
 
-            await asyncio.sleep(1)
+            await asyncio.sleep(0.02)
 
 
-async def static_lights(rgb):
+async def static_lights():
     pixels.fill(rgb)
     pixels.show()
     return
@@ -84,6 +93,7 @@ async def fetch_strip():
 
 async def work():
     global animation_type
+    global rgb
     while True:
         strip = await fetch_strip()
         rgb = tuple(int(strip["hex_color"][i : i + 2], 16) for i in (0, 2, 4))
@@ -92,9 +102,9 @@ async def work():
             if strip["animation"] == "rainbow":
                 asyncio.ensure_future(rainbow_animation())
             elif strip["animation"] == "cylon":
-                asyncio.ensure_future(cylon_animation(rgb))
+                asyncio.ensure_future(cylon_animation())
             else:
-                asyncio.ensure_future(static_lights(rgb))
+                asyncio.ensure_future(static_lights())
 
             animation_type = strip["animation"]
         await asyncio.sleep(1)
