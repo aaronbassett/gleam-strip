@@ -1,0 +1,14 @@
+# loop
+uvloop
+
+# database
+motor
+dnspython
+
+# utils
+colour
+rich
+
+# dev tools
+black
+flake8
