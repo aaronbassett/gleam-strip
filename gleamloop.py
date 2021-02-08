@@ -55,28 +55,20 @@ async def cylon_animation(rgb):
     while animation_type == "cylon":
         for i in range(num_pixels * 2):
             if animation_type == "cylon":
-                pixels.fill((255, 255, 255))
-
                 if i < num_pixels:  # going left
-                    pixels[i] = rgb
-                    if i > 0:
-                        pixels[i - 1] = rgb
-                    if i > 1:
-                        pixels[i - 2] = rgb
+                    print(f"left {i}")
+                    for j in range(num_pixels):
+                        pixels[j] = rgb if i == j else (255, 255, 255)
                 else:  # going right
-                    x = (num_pixels * 2) - i
-                    pixels[x] = rgb
-
-                    if x < num_pixels + 1:
-                        pixels[x + 1] = rgb
-                    if x < num_pixels + 2:
-                        pixels[x + 2] = rgb
-
+                    print(f"right {i}")
+                    x = (num_pixels * 2) - (i + 1)
+                    for j in range(num_pixels):
+                        pixels[j] = rgb if x == j else (255, 255, 255)
                 pixels.show()
             else:
                 return
 
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(1)
 
 
 async def static_lights(rgb):
