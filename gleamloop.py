@@ -15,6 +15,7 @@ num_pixels = 30
 pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False)
 
 animation_type = ""
+animation_speed = 0.05
 rgb = (0, 0, 255)
 num_pixels = 30
 
@@ -49,7 +50,7 @@ async def rainbow_animation():
                 else:
                     return
             pixels.show()
-            await asyncio.sleep(0.5)
+            await asyncio.sleep(animation_speed)
 
 
 async def cylon_animation():
@@ -77,7 +78,7 @@ async def cylon_animation():
             else:
                 return
 
-            await asyncio.sleep(0.02)
+            await asyncio.sleep(animation_speed)
 
 
 async def static_lights():
@@ -93,10 +94,12 @@ async def fetch_strip():
 
 async def work():
     global animation_type
+    global animation_speed
     global rgb
     while True:
         strip = await fetch_strip()
         rgb = tuple(int(strip["hex_color"][i : i + 2], 16) for i in (0, 2, 4))
+        animation_speed = float(strip["animation_speed"])
 
         if animation_type != strip["animation"]:
             if strip["animation"] == "rainbow":
