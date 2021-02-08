@@ -91,14 +91,15 @@ async def work():
     while True:
         strip = await fetch_strip()
         base_color = Color(strip["hex_color"])
+        rgb = (int(base_color.red), int(base_color.green), int(base_color.blue))
 
         if animation_type != strip["animation"]:
             if strip["animation"] == "rainbow":
                 asyncio.ensure_future(rainbow_animation())
             elif strip["animation"] == "cylon":
-                asyncio.ensure_future(cylon_animation(base_color.rgb))
+                asyncio.ensure_future(cylon_animation(rgb))
             else:
-                asyncio.ensure_future(static_lights(base_color.rgb))
+                asyncio.ensure_future(static_lights(rgb))
 
             animation_type = strip["animation"]
         await asyncio.sleep(1)
