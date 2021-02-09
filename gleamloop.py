@@ -11,13 +11,12 @@ motor_client = motor.motor_asyncio.AsyncIOMotorClient(os.environ["DB_URL"])
 db = motor_client[os.environ["DB_NAME"]]
 
 pixel_pin = board.D18
-num_pixels = 30
-pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=0.2, auto_write=False)
+num_pixels = 119
+pixels = neopixel.NeoPixel(pixel_pin, num_pixels, brightness=1, auto_write=False)
 
 animation_type = ""
 animation_speed = 0.05
 rgb = (0, 0, 255)
-num_pixels = 30
 
 
 def wheel(pos):
@@ -57,7 +56,7 @@ async def cylon_animation():
     while animation_type == "cylon":
         for i in range(num_pixels * 2):
             if animation_type == "cylon":
-                pixels.fill((255, 255, 255))
+                pixels.fill((0, 0, 0))
 
                 if i < num_pixels:  # going left
                     pixels[i] = rgb
