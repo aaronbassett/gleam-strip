@@ -1,4 +1,5 @@
 import os
+import math
 import board
 import neopixel
 import asyncio
@@ -80,9 +81,34 @@ async def cylon_animation():
             await asyncio.sleep(animation_speed)
 
 
+async def ripple_lights():
+    while animation_type == "ripple":
+        light1 = math.floor(num_pixels / 2)
+        light2 = math.ceil(num_pixels / 2)
+
+        for i in range(light1):
+            if animation_type == "ripple":
+                pixels[light1 - i] = rgb
+            else:
+                return
+
+        for i in range(light2):
+            if animation_type == "ripple":
+                pixels[light2 + i] = rgb
+            else:
+                return
+
+        pixels.show()
+
+        await asyncio.sleep(animation_speed)
+
+
 async def static_lights():
-    pixels.fill(rgb)
-    pixels.show()
+    while animation_type == "static":
+        pixels.fill(rgb)
+        pixels.show()
+
+        await asyncio.sleep(2)
     return
 
 
@@ -105,6 +131,8 @@ async def work():
                 asyncio.ensure_future(rainbow_animation())
             elif strip["animation"] == "cylon":
                 asyncio.ensure_future(cylon_animation())
+            elif strip["animation"] == "ripple":
+                asyncio.ensure_future(ripple_lights())
             else:
                 asyncio.ensure_future(static_lights())
 
