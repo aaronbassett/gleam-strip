@@ -88,21 +88,17 @@ async def ripple_lights():
         light1 = math.floor(num_pixels / 2)
         light2 = math.ceil(num_pixels / 2)
 
-        for i in range(light1):
+        for j in range(num_pixels):
             if animation_type == "ripple":
-                pixels[light1 - (i + 1)] = rgb
-            else:
-                return
+                for i in range(light1):
+                    pixels[light1 - (i + 1)] = rgb
 
-        for i in range(light2):
-            if animation_type == "ripple":
-                pixels[light2 + (i - 1)] = rgb
-            else:
-                return
+                for i in range(light2):
+                    pixels[light2 + (i - 1)] = rgb
 
-        pixels.show()
+            pixels.show()
 
-        await asyncio.sleep(animation_speed)
+            await asyncio.sleep(animation_speed)
 
 
 async def static_lights():
