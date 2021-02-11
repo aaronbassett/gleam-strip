@@ -83,18 +83,20 @@ async def cylon_animation():
 
 async def ripple_lights():
     while animation_type == "ripple":
+        pixels.fill((0, 0, 0))
+
         light1 = math.floor(num_pixels / 2)
         light2 = math.ceil(num_pixels / 2)
 
         for i in range(light1):
             if animation_type == "ripple":
-                pixels[light1 - i] = rgb
+                pixels[light1 - (i + 1)] = rgb
             else:
                 return
 
         for i in range(light2):
             if animation_type == "ripple":
-                pixels[light2 + i] = rgb
+                pixels[light2 + (i - 1)] = rgb
             else:
                 return
 
