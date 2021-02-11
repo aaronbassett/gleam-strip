@@ -88,13 +88,12 @@ async def ripple_lights():
         light1 = math.floor(num_pixels / 2)
         light2 = math.ceil(num_pixels / 2)
 
-        for j in range(num_pixels):
-            if animation_type == "ripple":
-                for i in range(light1):
-                    pixels[light1 - (i + 1)] = rgb
+        for i in range(light1):
+            print(f"light 1 - {light1 - (i + 1)}")
+            print(f"light 2 - {light2 + (i - 1)}")
 
-                for i in range(light2):
-                    pixels[light2 + (i - 1)] = rgb
+            pixels[light1 - (i + 1)] = rgb
+            pixels[light2 + (i - 1)] = rgb
 
             pixels.show()
 
