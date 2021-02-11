@@ -88,11 +88,11 @@ async def ripple_lights():
         light1 = math.floor(num_pixels / 2)
         light2 = math.ceil(num_pixels / 2)
 
-        for i in range(light1):
-            print(f"light 1 - {light1 - (i + 1)}")
+        for i in range(light2):
             print(f"light 2 - {light2 + (i - 1)}")
 
-            pixels[light1 - (i + 1)] = rgb
+            if light1 - (i + 1) >= 0:
+                pixels[light1 - (i + 1)] = rgb
             pixels[light2 + (i - 1)] = rgb
 
             pixels.show()
